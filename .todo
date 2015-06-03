@@ -12,6 +12,21 @@
 // Get both the input variables working 
 
 
+ = [ { 	"_TYPE": "INTNED",
+				"_IC": "Y",
+				"_VAL": "0" },
+			{
+			"_TYPE": "INTEW",
+			"_IC": "Y",
+			"_VAL": "0"
+			}
+	],
+	"_AT": "2015-05-12 15:05:00",
+	"_SD": "2015-05-12",
+	"_SP": "33"
+},
+
+
 
 
 

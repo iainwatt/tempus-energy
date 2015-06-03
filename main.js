@@ -15,41 +15,54 @@
 // INTEW East-West Interconnect (To and from Ireland)
 // IC This fuel type is an interconnect
 
-var fuel =  [ { "_TYPE": "CCGT",
-                "_IC": "N",
-                "_VAL": "8145" },
-              { "_TYPE": "OCGT",
-                "_IC": "N",
-                "_VAL": "600" },
-              { "_TYPE": "INTFR",
-                "_IC": "Y",
-                "_VAL": "1996"},
-              { "_TYPE": "CCGT",
-                "_IC": "N",
-                "_VAL": "8357"},
-              { "_TYPE": "COAL",
-                "_IC": "N",
-                "_VAL": "7899"}, 
-              { "_TYPE": "WIND",
-                "_IC": "N",
-                "_VAL": "4899"}];
-                
+// What we want
+// • Coal
+// • Gas = CCGT, OCGT
+// • Oil
+// • Hydroelectric = NPSHYD
+// • Nuclear
+// • Wind
+// • Interconnect
+//   Other = PS, OTHER
 
 
-                
+// this will sort by date and sp
+function datSort(objArr, date, sp) {
+    var sortedData = [];
+    for (i = 0, x = objArr.length; i < x; i++) {
+        if (objArr[i]._SD === date && objArr[i]._SP === sp ) {
+            sortedData.push(objArr[i].FUEL);
+        }
+    }
+}
+
+            
 function count (objArr) {
-    var ic = [], nonIC = [], nonClass, CCGT = [], OCGT = [], OIL = [], COAL = [], NUCLEAR = [], WIND = [], PS = [], NPSHYD = [], OTHER = [], INTFR = [], INTIRL = [], INTNED = [], INTEW = [], totalNonIC = [];
+    var ic = [], nonIC = [], nonClass, CCGT = [], OCGT = [], GAS = [], OIL = [], COAL = [], NUCLEAR = [], WIND = [], PS = [], NPSHYD = [], OTHER = [], INTFR = [], INTIRL = [], INTNED = [], INTEW = [], totalNonIC = [], totalInterCont = [], totalEnergy = [], merged = [];
     
     var sumNum = function(a,b) {
         return a + b;
     }; 
+
+    merged = merged.concat.apply(merged, objArr);
+    // split up the data types and find total
+    for (i = 0, x = merged.length; i < x; i++) {
+        totalEnergy.push(merged[i]._VAL);
+        if (merged[i]._IC == "N") { nonIC.push(merged[i]) }
+        else if (merged[i]._IC == "Y") { ic.push(merged[i]) }
+        else { nonClass.push(merged[i]) }
+    }
+
     
-    // split up the data types 
+    // split up the data types and find total
     for (i = 0, x = objArr.length; i < x; i++) {
+        totalEnergy.push(objArr[i]._VAL);
         if (objArr[i]._IC == "N") { nonIC.push(objArr[i]) }
         else if (objArr[i]._IC == "Y") { ic.push(objArr[i]) }
         else { nonClass.push(objArr[i]) }
     }
+
+    totalEnergy = totalEnergy.map(Number).reduce(sumNum);
  
     // sorting all nonIC energy types into there own variable
     for (i = 0, y = nonIC.length; i < y; i++) {
@@ -96,16 +109,15 @@ function count (objArr) {
             INTEW.push(nonIC[i]._VAL);
             break;    
         } 
- 
     }
     
     // Finding total Power generated domestically 
     totalNonIC = totalNonIC.map(Number).reduce(sumNum);
-     console.log(totalNonIC);
     
     // summing all values 
     CCGT = CCGT.map(Number).reduce(sumNum);
     OCGT = OCGT.map(Number).reduce(sumNum);
+    GAS = CCGT + OCGT;
     OIL = OIL.map(Number).reduce(sumNum);
     COAL = COAL.map(Number).reduce(sumNum);
     NUCLEAR = NUCLEAR.map(Number).reduce(sumNum);
@@ -113,13 +125,14 @@ function count (objArr) {
     PS = PS.map(Number).reduce(sumNum);
     NPSHYD = NPSHYD.map(Number).reduce(sumNum);
     OTHER = OTHER.map(Number).reduce(sumNum);
-    INTFR = INTFR.map(Number).reduce(sumNum);
-    INTIRL = INTIRL.map(Number).reduce(sumNum);
-    INTNED = INTNED.map(Number).reduce(sumNum);
-    INTEW = INTEW.map(Number).reduce(sumNum);
-    
-    // console.log("COAL = " + (COAL/totalNonIC)*100);
-    console.log("CCGT = " + CCGT + "\nOCGT = " + OCGT + "\nCOAL = " + COAL + "\nWIND = " + WIND);
+
+    // finding the value of the imported energy 
+    for (i = 0, z = ic.length; i < z; i++) {
+        totalInterCont.push(ic[i]._VAL);
+    }  
+    totalInterCont = totalInterCont.map(Number).reduce(sumNum);  
+
+
 }
 
 count(fuel);

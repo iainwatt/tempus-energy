@@ -43,8 +43,6 @@ Please don’t spend overly long on it, but do spend time thinking about the sha
 
 
 
-
-
 cmd shift t = opens terminal 
 cmd shift p GitHub: Copy Starred Gist to Clipboard - 
 
