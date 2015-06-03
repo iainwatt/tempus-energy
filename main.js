@@ -26,8 +26,13 @@
 //   Other = PS, OTHER
 
 
+
+
+
 // this will sort by date and sp
 function datSort(objArr, date, sp) {
+    objArr = main_data
+    console.log("clicked");
     var sortedData = [];
     for (i = 0, x = objArr.length; i < x; i++) {
         if (objArr[i]._SD === date && objArr[i]._SP === sp ) {
@@ -135,5 +140,5 @@ function count (objArr) {
 
 }
 
-count(fuel);
+// count(fuel);
 
