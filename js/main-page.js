@@ -4,6 +4,7 @@ $(document).ready(function() {
 	$( "#target" ).submit(function( event ) {
 
 		$("#energy-data").text("")
+		$("#table-info").text("")
 		var my_sp = $("#time_pick").val();
 		var dd_day = $("#day_pick").val();
 	  var my_month = $('#month').val();
