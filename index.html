@@ -8,48 +8,99 @@
 </head>
 <body>
 
-<h1>This is the energy Calc</h1>
+<div class="content-wrapper">
 
+	<div class="header">
+		<h1>Energy Generated/Consumed by UK </h1>
+	</div>
 
-<!-- <form id="td-picker">
-	<select id="daydropdown">
-	</select> 
-	<select id="monthdropdown">
-	</select> 
-	<select id="yeardropdown">
-	</select> 
-	<select id="timedropdown">
-	<option>Choose a number</option>
-	</select> 
-	<input type="submit" value="Go">
-</form> -->
+	<form id="target">
+		<select id="my_dropdown">
+		<!--   <option value="">Month</option> -->
+		<!--   <option value="1">Jan</option>
+		  <option value="2">Feb</option>
+		  <option value="3">Mar</option>
+		  <option value="4">Apr</option> -->
+		  <option value="5">May</option>
+		<!--   <option value="6">Jun</option>
+		  <option value="7">Jul</option>
+		  <option value="8">Aug</option>
+		  <option value="9">Sep</option>
+		  <option value="10">Oct</option>
+		  <option value="11">Nov</option>
+		  <option value="12">Dec</option> -->
+		</select> 
+		<select id="day_pick">
+			<option value="12">12</option>
+			<option value="13">13</option>
+		</select>
+		<select id="time_pick">
+			<option value="">Time</option>
+		  <option value="1">00:00 - 00:30</option>
+		  <option value="2">00:30 - 01:00</option>
+		  <option value="2">01:00 - 01:30</option>
+		  <option value="3">01:30 - 02:00</option>
+		  <option value="4">02:00 - 02:30</option>
+		  <option value="5">02:30 - 03:00</option>
+		  <option value="6">03:00 - 03:30</option>
+		  <option value="7">03:30 - 04:00</option>
+		  <option value="8">04:00 - 04:30</option>
+		  <option value="9">04:30 - 05:00</option>
+			<option value="10">05:00 - 05:30</option>
+			<option value="11">05:30 - 06:00</option>
+			<option value="12">06:00 - 06:30</option>
+			<option value="13">06:30 - 07:00</option>
+			<option value="14">07:00 - 07:30</option>
+			<option value="15">07:30 - 08:00</option>
+			<option value="16">08:00 - 08:30</option>
+			<option value="17">08:30 - 09:00</option>
+			<option value="18">09:00 - 09:30</option>
+		  <option value="19">09:30 - 10:00</option>
+		  <option value="20">10:00 - 10:30</option>
+		  <option value="21">10:30 - 11:00</option>
+		  <option value="22">11:00 - 11:30</option>
+			<option value="23">11:30 - 12:00</option>
+			<option value="24">12:00 - 12:30</option>
+			<option value="25">12:30 - 13:00</option>
+			<option value="26">13:00 - 13:30</option>
+			<option value="27">13:30 - 14:00</option>
+			<option value="28">14:00 - 14:30</option>
+			<option value="29">14:30 - 15:00</option>
+			<option value="30">15:00 - 15:30</option>
+			<option value="31">15:30 - 16:00</option>
+		  <option value="32">16:00 - 16:30</option>
+		  <option value="33">16:30 - 17:00</option>
+		  <option value="34">17:00 - 17:30</option>
+		  <option value="35">17:30 - 18:00</option>
+			<option value="36">18:00 - 18:30</option>
+			<option value="38">18:30 - 19:00</option>
+			<option value="39">19:00 - 19:30</option>
+			<option value="40">19:30 - 20:00</option>
+			<option value="41">20:00 - 20:30</option>
+			<option value="42">20:30 - 21:00</option>
+			<option value="43">21:00 - 21:30</option>
+			<option value="44">21:30 - 22:00</option>
+			<option value="45">22:00 - 22:30</option>
+			<option value="46">22:30 - 23:00</option>
+			<option value="47">23:00 - 23:30</option>
+			<option value="48">23:30 - 00:00</option>
+		</select>
+		<select id="year_pick">
+		   <option value="2015">2015</option>
+		</select>
+	  <input type="submit" value="Go">
+	</form>
 
+	<div id="table-info">
+		
+	</div>
 
-
-<form id="target">
-<!-- <select id="my_dropdown">
-	<option value="value1">Value 1</option> 
-  <option value="value2">Value 2</option>
-  <option value="value3">Value 3</option>
-</select> 
-	<input id="day" type="text">
-	<input id="month" type="text"> -->
-	<input id="date" type="text" placeholder="enter date, eg 2015-05-12" value="2015-05-12">
-	<input id="sp" type="text" placeholder="enter sp" value="33">
-<!--   <input id="time" type="text"> -->
-  <input type="submit" value="Go">
-</form>
-
-<div id="energy-data">
-	
+	<div id="energy-data">	
+	</div>
 </div>
-
 	
 </body>
 <script src="main.js"></script>
 <script src="js/main-page.js"></script>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-
-
 </html>

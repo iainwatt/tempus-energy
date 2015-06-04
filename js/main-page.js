@@ -1,67 +1,19 @@
 
-
-
-// var monthtext=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
-
-// function populatedropdown(dayfield, monthfield, yearfield, timefield){
-// 		var today=new Date()
-// 		var dayfield=document.getElementById(dayfield)
-// 		var monthfield=document.getElementById(monthfield)
-// 		var yearfield=document.getElementById(yearfield)
-// 		var timefield=document.getElementById(timefield)
-
-// 			var options = [];
-// 			for (i=0; i < 49; i++) { options.push(i); }
-
-// 			for(var i = 0; i < options.length; i++) {
-//     		var opt = options[i];
-//     		var el = document.createElement("option");
-//     		el.textContent = opt;
-//     		el.value = opt;
-//     		timefield.appendChild(el);
-// 			}
-	
-// 		for (var i=1; i<32; i++) 
-// 			dayfield.options[i]=new Option(i, i+1)
-// 			dayfield.options[today.getDate()]=new Option(today.getDate(), today.getDate(), true, true) //select today's day
-
-// 		for (var m=0; m<12; m++)
-// 			monthfield.options[m]=new Option(monthtext[m], monthtext[m])
-// 			monthfield.options[today.getMonth()]=new Option(monthtext[today.getMonth()], monthtext[today.getMonth()], true, true) //select today's month
-// 			var thisyear=today.getFullYear()
-
-// 		for (var y=0; y<3; y++){
-// 			yearfield.options[y]=new Option(thisyear, thisyear)
-// 			thisyear-=1
-// 		}
-// 		yearfield.options[0]=new Option(today.getFullYear(), today.getFullYear(), true, true) //select today's year
-// }
-
-
-// window.onload=function(){
-// populatedropdown("daydropdown", "monthdropdown", "yeardropdown", "timedropdown")
-
 $(document).ready(function() {
 
-	$( "#td-picker" ).submit(function( event ) {
-		console.log("clicked");
-	});	
-
 	$( "#target" ).submit(function( event ) {
-	  var my_day = $('#day').val();
+
+		$("#energy-data").text("")
+		var my_sp = $("#time_pick").val();
+		var dd_day = $("#day_pick").val();
 	  var my_month = $('#month').val();
 	  var my_time = $('#time').val();
-	  var my_date = $('#date').val();
-	  var my_sp = $('#sp').val();
-	  
+	  var my_date = "2015-05-"+dd_day;
   	$.ajax({
     	type: 'GET',
     	url: "http://localhost:3000/HIST_FUELINST"
   	})
   	.done(function(response) {	
-  		// console.log(response.INST);
-  		// console.log(response.INST.length);
-  		// console.log(my_sp);
 
 
   		// declare the varibales we will be using 
@@ -80,16 +32,19 @@ $(document).ready(function() {
 
       // and merge all the data as one sp consittutes 6 array elements 
 	    merged = merged.concat.apply(merged, sortedData)
-
+	
+	    if (merged[0] === undefined) { alert("sorry, no data for this time period, try another")}
       // split up the data into foreign and domestic and find total 
 	    for (i = 0, x = merged.length; i < x; i++) {
+
 	        totalEnergy.push(merged[i]._VAL);
 	        if (merged[i]._IC == "N") { nonIC.push(merged[i]) }
 	        else if (merged[i]._IC == "Y") { ic.push(merged[i]) }
 	        else { nonClass.push(merged[i]) }
 	    }
+		
 	  	totalEnergy = totalEnergy.map(Number).reduce(sumNum);
-	  	// console.log(totalEnergy);
+
 
 	   // sorting all nonIC energy types into there own variable
     	for (i = 0, y = nonIC.length; i < y; i++) {
@@ -152,6 +107,9 @@ $(document).ready(function() {
 	    PS = PS.map(Number).reduce(sumNum);
 	    NPSHYD = NPSHYD.map(Number).reduce(sumNum);
 	    OTHER = OTHER.map(Number).reduce(sumNum);
+	    nOTHER = PS + OTHER
+
+	    var pGAS = GAS/totalEnergy * 100
 
 	    // finding the value of the imported energy 
     	for (i = 0, z = ic.length; i < z; i++) {
@@ -160,23 +118,93 @@ $(document).ready(function() {
     	totalInterCont = totalInterCont.map(Number).reduce(sumNum);  
     	console.log("Total Energy used = " + totalEnergy + "\nProduced domestically = " + totalNonIC + "\nImported = " + totalInterCont + "\nCheck = " + (totalNonIC + totalInterCont));
 
-    	var data_table = '<div class="energy-card">';
-    					data_table += '<h1>TOTAL ENERGY: ' + totalEnergy + '</h1>';
-    					data_table += '<h1>TOTAL DOMESTIC: ' + totalNonIC + '</h1>';
+    	var time_remind = '<div class="reminder">';
+    				time_remind += '<h3>Energy Used on: ' + my_date + ' in settlement perdiod: ' + my_sp + '</h3>';
+    				time_remind += '</div>' 
 
-              data_table += '<h2>GAS: ' + GAS + '</h2>';
-              data_table += '<h2>OIL: ' + OIL + '</h2>';
-              data_table += '<h2>COAL: ' + COAL + '</h2>';
-              data_table += '<h2>NUCLEAR: ' + NUCLEAR + '</h2>';
-              data_table += '<h2>WIND: ' + WIND + '</h2>';
-              data_table += '<h1>TOTAL IMPORTED: ' + totalInterCont + '</h1>';
-              data_table += '</div>';
-      $('#energy-data').append(data_table);        
+
+    	// populating html
+        var ht_table = '<table class="energy-table">';
+        	ht_table += '<tr>';
+        		ht_table += '<th> Energy </th>';
+        		ht_table += '<th> KW </th>';
+        		ht_table += '<th> % </th>';
+        	ht_table += '</tr>';
+        	ht_table += '<tr>';
+        		ht_table += '<td> Domestic </td>';
+        		ht_table	+= '<td>' + totalNonIC + '</td>';
+        		ht_table	+= '<td>' + (totalNonIC/totalEnergy * 100).toFixed(0) + '</td>';
+        	ht_table += '</tr>'
+        	ht_table += '<tr>';
+        		ht_table += '<td> Foreign </td>';
+        		ht_table	+= '<td>' + totalInterCont + '</td>';
+        		ht_table	+= '<td>' + (totalInterCont/totalEnergy * 100).toFixed(0) + '</td>';
+        	ht_table += '</tr>'
+        	ht_table += '<tr>';
+        		ht_table += '<td> TOTAL </td>';
+        		ht_table	+= '<td>' + totalEnergy + '</td>';
+        		ht_table	+= '<td> 100 </td>';
+        	ht_table += '</tr>'
+        	ht_table += '</table>';
+
+        var domestic_usage = '<table class="domestic-table">'
+        	domestic_usage += '<caption>Breakdown of Domestic Usage</caption>'
+	        domestic_usage += '<tr>';
+        		domestic_usage += '<th> Type </th>';
+        		domestic_usage += '<th> KW </th>';
+        		domestic_usage += '<th> % </th>';
+	        domestic_usage += '</tr>';
+	        domestic_usage += '<tr>';
+        		domestic_usage += '<td> GAS </td>';
+        		domestic_usage	+= '<td>' + GAS + '</td>';
+        		domestic_usage	+= '<td>' + (GAS/totalNonIC * 100).toFixed(0) + '</td>';
+        	domestic_usage += '</tr>';
+        	domestic_usage += '<tr>';
+        		domestic_usage += '<td> OIL </td>';
+        		domestic_usage	+= '<td>' + OIL + '</td>';
+        		domestic_usage	+= '<td>' + (OIL/totalNonIC * 100).toFixed(0) + '</td>';
+        	domestic_usage += '</tr>';
+        	domestic_usage += '<tr>';
+        		domestic_usage += '<td> COAL </td>';
+        		domestic_usage	+= '<td>' + COAL + '</td>';
+        		domestic_usage	+= '<td>' + (COAL/totalNonIC * 100).toFixed(0) + '</td>';
+        	domestic_usage += '</tr>';
+        	domestic_usage += '<tr>';
+        		domestic_usage += '<td> NUCLEAR </td>';
+        		domestic_usage	+= '<td>' + NUCLEAR + '</td>';
+        		domestic_usage	+= '<td>' + (NUCLEAR/totalNonIC * 100).toFixed(0) + '</td>';
+        	domestic_usage += '</tr>';
+        	domestic_usage += '<tr>';
+        		domestic_usage += '<td> WIND </td>';
+        		domestic_usage	+= '<td>' + WIND + '</td>';
+        		domestic_usage	+= '<td>' + (WIND/totalNonIC * 100).toFixed(0) + '</td>';
+        	domestic_usage += '</tr>';
+        	domestic_usage += '<tr>';
+        		domestic_usage += '<td> HYDRO </td>';
+        		domestic_usage	+= '<td>' + NPSHYD + '</td>';
+        		domestic_usage	+= '<td>' + (NPSHYD/totalNonIC * 100).toFixed(0) + '</td>';
+        	domestic_usage += '</tr>';
+        	domestic_usage += '<tr>';
+        		domestic_usage += '<td> OTHER </td>';
+        		domestic_usage	+= '<td>' + nOTHER + '</td>';
+        		domestic_usage	+= '<td>' + (nOTHER/totalNonIC * 100).toFixed(0) + '</td>';
+        	domestic_usage += '</tr>';
+        	domestic_usage += '<tr>';
+        		domestic_usage += '<td> TOTAL </td>';
+        		domestic_usage	+= '<td>' + totalNonIC + '</td>';
+        		domestic_usage	+= '<td> 100 </td>';
+        	domestic_usage += '</tr>';
+        	domestic_usage += '<table>'
+
+      // $('#energy-data').append(data_table); 
+      $('#table-info').append(time_remind);
+      $('#energy-data').append(ht_table);   
+      $('#energy-data').append(domestic_usage);       
+
+
   	});
 
 	  event.preventDefault();
-	 
-	  
 	  
 	});
 

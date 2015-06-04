@@ -1,0 +1,40 @@
+
+.content-wrapper {
+	text-align: center;
+}
+
+
+.header {
+	text-align: center;
+	font-family: 'Lucida Grande', sans-serif;
+}
+
+#table-info {
+	font-family: 'Lucida Grande', sans-serif;
+}
+#energy-data {
+	font-family: 'Lucida Grande', sans-serif;
+	text-align: center;
+/*	margin-left: 350px;*/
+
+}
+
+.energy-table {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 300px;
+}
+.energy-table tr {
+	text-align: left;
+}
+
+.domestic-table {
+	margin-left: auto;
+	margin-right: auto;
+	width: 300px;
+}
+.domestic-table tr {
+	text-align: left;
+}
